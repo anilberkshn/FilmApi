@@ -88,5 +88,11 @@ namespace FilmApi.Controllers
             
             return Ok(id);
         }
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync([FromQuery]SearchByIdDto id, [FromBody] UpdateDto updateDto)
+        {
+            var result = await _filmService.Update(id, updateDto);
+            return Ok(result);
+        }
     }
 }
