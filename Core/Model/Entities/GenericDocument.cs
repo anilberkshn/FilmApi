@@ -4,7 +4,7 @@ namespace Core.Model.Entities
 {
     public class GenericDocument
     {
-        public String Id { get; set; }
+        public String Id { get; set; } // todo:??
         public DateTime CreatedTime { get; set; }
         public DateTime UpdatedTime { get; set; }
         public DateTime DeleteTime { get; set; }

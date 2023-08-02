@@ -10,36 +10,36 @@ using MongoDB.Driver;
 
 namespace FilmApi.Repository
 {
-    public class FilmRepository: GenericRepository<SearchByIdModel>,IFilmRepository
+    public class FilmRepository: GenericRepository<FilmModel>,IFilmRepository
     {
         public FilmRepository(IContext context, string collectionName = "Film") : base(context, collectionName)
         {
         }
 
-        public async Task<SearchByIdModel> GetByIdAsync(string imdbId)
+        public async Task<FilmModel> GetByIdAsync(SearchByIdDto id)
         {
-            var film = await FindOneAsync(x => x.ImdbId == imdbId);
+            var film = await FindOneAsync(x => x.ImdbId == id);
             return film;
         }
 
-        public async Task<IEnumerable<SearchByIdModel>> GetAllAsync()
+        public async Task<IEnumerable<FilmModel>> GetAllAsync()
         {
             return await FindAllAsync();
         }
 
-        public async Task<IEnumerable<SearchByIdModel>> GetAllSkipTakeAsync(GetAllDto getAllDto)
+        public async Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto)
         {
             return await GetManyAsync(getAllDto);
         }
 
-        public async Task<SearchByIdModel> InsertAsync(SearchByIdModel searchByIdModel)
+        public async Task<FilmModel> InsertAsync(FilmModel filmModel)
         {
-            return await CreateAsync(searchByIdModel);
+            return await CreateAsync(filmModel);
         }
 
-        public async Task<SearchByIdModel> Update(string imdbId, UpdateDto updateDto)
+        public async Task<FilmModel> Update(SearchByIdDto id, UpdateDto updateDto)
         {
-            var update = Builders<SearchByIdModel>.Update
+            var update = Builders<FilmModel>.Update
                 .Set(x => x.Title, updateDto.Title)
                 .Set(x => x.Year, updateDto.Year)
                 .Set(x => x.Rated, updateDto.Rated)
@@ -61,28 +61,18 @@ namespace FilmApi.Repository
                 .Set(x => x.Response, updateDto.Response)
                 ;
 
-            Update(x => x.ImdbId == imdbId, update);
-            return await GetByIdAsync(imdbId);
+            Update(x => x.ImdbId == id, update);
+            return await GetByIdAsync(id);
         }
 
-        public void Delete(string imdbId)
+        public void DeleteRepo(SearchByIdDto id)
         {
-            throw new NotImplementedException();
+          Delete(x => x.ImdbId == id);
         }
 
-        public Task<IEnumerable<SearchByIdModel>> GetManyTitle(string titleName)
+        public async Task<IEnumerable<FilmModel>> GetByTitleRepoAsync(SearchByTitleDto byTitleDto)
         {
-            throw new NotImplementedException();
-        }
-
-        public Guid Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<SearchByIdModel>> DeleteOrdersByCustomerId(string imdbId)
-        {
-            throw new NotImplementedException();
+            return  await GetByTitleAsync(byTitleDto);  
         }
     }
 }

@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Database.Context;
 using Core.Database.Interface;
+using Core.Middleware;
 using Core.Model.Config;
+using FilmApi.Repository;
+using FilmApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,8 +40,10 @@ namespace FilmApi
             var dbSettings = Configuration.GetSection("DatabaseSettings").Get<GenericDatabaseSettings>();
             var client = new MongoClient(dbSettings.ConnectionString);
             var context = new Context(client,dbSettings.DatabaseName);
-            
+
+            services.AddScoped<IFilmService, FilmService>();
             services.AddSingleton<IContext, Context>(_ => context);
+            services.AddSingleton<IFilmRepository, FilmRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,11 +51,12 @@ namespace FilmApi
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FilmApi v1"));
             }
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -1,4 +1,4 @@
-namespace FilmApi.Controllers.Clients
+namespace FilmApi.Clients
 {
     public class OmdbHttpClient: IOmdbHttpClient
     {

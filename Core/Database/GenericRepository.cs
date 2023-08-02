@@ -82,9 +82,9 @@ namespace Core.Database
             _collection.FindOneAndUpdate<T>(filter, update);
         }
         
-        public async Task<IEnumerable<T>> GetByCustomerId(Guid customerId)
+        public async Task<IEnumerable<T>> GetByTitleAsync(SearchByTitleDto searchByTitleDto) //todo: ?
         {
-            var filter = Builders<T>.Filter.Eq("CustomerId",customerId);
+            var filter = Builders<T>.Filter.Eq("Title",searchByTitleDto.Title); //??
             var result = await _collection
                 .Find(filter)
                 .ToListAsync();
