@@ -26,9 +26,10 @@ namespace Core.Database
 
         public async Task<T> CreateAsync(T record)
         {
+            // record.Id = Guid.NewGuid();
             record.CreatedTime = DateTime.Now;
             record.UpdatedTime = DateTime.Now;
-
+    
             await _collection.InsertOneAsync(record);
             return record;
         }
