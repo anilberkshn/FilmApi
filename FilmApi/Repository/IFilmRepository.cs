@@ -9,15 +9,15 @@ namespace FilmApi.Repository
 {
     public interface IFilmRepository
     {
-        public Task<SearchByIdModel> GetByIdAsync(string imdbId);
-        public Task<IEnumerable<SearchByIdModel>> GetAllAsync();
-        public Task<IEnumerable<SearchByIdModel>> GetAllSkipTakeAsync(GetAllDto getAllDto);
-        public Task<Guid> InsertAsync(SearchByIdModel searchByIdModel);
-        public Task<SearchByIdModel> Update(string imdbId, UpdateDto updateDto);
-        public Guid Delete(string imdbId);
+        public Task<FilmModel> InsertAsync(FilmModel filmModel);
+        public Task<IEnumerable<FilmModel>> GetAllAsync();
+        public Task<FilmModel> GetByIdAsync(string id);
+        public Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto);
+        public Task<FilmModel> Update(string id, UpdateDto updateDto);
+        public void DeleteRepo(string id);
         // public void SoftDelete(Guid id, SoftDeleteDto softDeleteDto);
         // public StatusDto ChangeStatus(Guid id, StatusDto statusDto);
         
-        public Task<IEnumerable<SearchByIdModel>> GetManyTitle(string titleName);
+        public Task<IEnumerable<FilmModel>> GetByTitleRepoAsync(SearchByTitleDto byTitleDto);
     }
 }

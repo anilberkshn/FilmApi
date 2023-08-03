@@ -6,58 +6,73 @@ using Core.Database.Interface;
 using Core.Model.RequestModel;
 using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
+using MongoDB.Driver;
 
 namespace FilmApi.Repository
 {
-    public class FilmRepository: GenericRepository<SearchByIdModel>,IFilmRepository
+    public class FilmRepository: GenericRepository<FilmModel>,IFilmRepository
     {
         public FilmRepository(IContext context, string collectionName = "Film") : base(context, collectionName)
         {
         }
 
-        public Task<SearchByIdModel> GetByIdAsync(string imdbId)
+        public async Task<FilmModel> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var film = await FindOneAsync(x => x.ImdbId == id);
+            return film;
         }
 
-        public Task<IEnumerable<SearchByIdModel>> GetAllAsync()
+        public async Task<IEnumerable<FilmModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await FindAllAsync();
         }
 
-        public Task<IEnumerable<SearchByIdModel>> GetAllSkipTakeAsync(GetAllDto getAllDto)
+        public async Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto)
         {
-            throw new NotImplementedException();
+            return await GetManyAsync(getAllDto);
         }
 
-        public Task<Guid> InsertAsync(SearchByIdModel searchByIdModel)
+        public async Task<FilmModel> InsertAsync(FilmModel filmModel)
         {
-            throw new NotImplementedException();
+            return await CreateAsync(filmModel);
         }
 
-        public Task<SearchByIdModel> Update(string imdbId, UpdateDto updateDto)
+        public async Task<FilmModel> Update(string id, UpdateDto updateDto)
         {
-            throw new NotImplementedException();
+            var update = Builders<FilmModel>.Update
+                .Set(x => x.Title, updateDto.Title)
+                .Set(x => x.Year, updateDto.Year)
+                .Set(x => x.Rated, updateDto.Rated)
+                .Set(x => x.Released, updateDto.Released)
+                .Set(x => x.Runtime, updateDto.Runtime)
+                .Set(x => x.Genre, updateDto.Genre)
+                .Set(x => x.Director, updateDto.Director)
+                .Set(x => x.Writer, updateDto.Writer)
+                .Set(x => x.Actors, updateDto.Actors)
+                .Set(x => x.Plot, updateDto.Plot)
+                .Set(x => x.Language, updateDto.Language)
+                .Set(x => x.Country, updateDto.Country)
+                .Set(x => x.Awards, updateDto.Awards)
+                .Set(x => x.Poster, updateDto.Poster)
+                .Set(x => x.Dvd, updateDto.Dvd)
+                .Set(x => x.BoxOffice, updateDto.BoxOffice)
+                .Set(x => x.Production, updateDto.Production)
+                .Set(x => x.Website, updateDto.Website)
+                .Set(x => x.Response, updateDto.Response)
+                ;
+
+            Update(x => x.ImdbId == id, update);
+            return await GetByIdAsync(id);
         }
 
-        public Guid Delete(string imdbId)
+        public void DeleteRepo(string id)
         {
-            throw new NotImplementedException();
+          Delete(x => x.ImdbId == id);
         }
 
-        public Task<IEnumerable<SearchByIdModel>> GetManyTitle(string titleName)
+        public async Task<IEnumerable<FilmModel>> GetByTitleRepoAsync(SearchByTitleDto byTitleDto)
         {
-            throw new NotImplementedException();
-        }
-
-        public Guid Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<SearchByIdModel>> DeleteOrdersByCustomerId(string imdbId)
-        {
-            throw new NotImplementedException();
+            return  await GetByTitleAsync(byTitleDto);  
         }
     }
 }
