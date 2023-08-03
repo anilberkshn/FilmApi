@@ -30,7 +30,7 @@ namespace FilmApi.Services
             return await _filmRepository.GetAllAsync();
         }
 
-        public async Task<FilmModel> GetByIdAsync(SearchByIdDto id)
+        public async Task<FilmModel> GetByIdAsync(string id)
         {
             var film = await _filmRepository.GetByIdAsync(id);
               
@@ -54,14 +54,14 @@ namespace FilmApi.Services
             return await _filmRepository.GetAllSkipTakeAsync(getAllDto);
         }
 
-        public async Task<FilmModel> Update(SearchByIdDto id, UpdateDto updateDto)
+        public async Task<FilmModel> Update(string id, UpdateDto updateDto)
         {
             var result = await _filmRepository.Update(id, updateDto);
             // Kendi veritabanımızda film bilgisini güncelleyebilmek için 
             return result;
         }
 
-        public void Delete(SearchByIdDto id)
+        public void Delete(string id)
         {
             _filmRepository.DeleteRepo(id);
         }

@@ -11,10 +11,10 @@ namespace FilmApi.Repository
     {
         public Task<FilmModel> InsertAsync(FilmModel filmModel);
         public Task<IEnumerable<FilmModel>> GetAllAsync();
-        public Task<FilmModel> GetByIdAsync(SearchByIdDto id);
+        public Task<FilmModel> GetByIdAsync(string id);
         public Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto);
-        public Task<FilmModel> Update(SearchByIdDto id, UpdateDto updateDto);
-        public void DeleteRepo(SearchByIdDto id);
+        public Task<FilmModel> Update(string id, UpdateDto updateDto);
+        public void DeleteRepo(string id);
         // public void SoftDelete(Guid id, SoftDeleteDto softDeleteDto);
         // public StatusDto ChangeStatus(Guid id, StatusDto statusDto);
         

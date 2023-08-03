@@ -27,6 +27,7 @@ namespace FilmApi.Controllers
             {
                 Title = createDto.Title,
                 Year = createDto.Year,
+                ImdbId = createDto.ImdbId,
                 Type = createDto.Type,
                 Poster = createDto.Poster,
                 Rated = createDto.Rated,
@@ -55,13 +56,13 @@ namespace FilmApi.Controllers
 
             var response = new CreateResponse()
             {
-                ImdbId= film.ImdbId.ImdbId
+                ImdbId= film.ImdbId
             };
             return Ok(response);
         }
         
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(SearchByIdDto id)
+        public async Task<IActionResult> GetByIdAsync(string id)
         {
             var findOne = await _filmService.GetByIdAsync(id);
             return Ok(findOne);
@@ -81,7 +82,7 @@ namespace FilmApi.Controllers
         }
         
         [HttpDelete("HardDelete")]
-        public async Task<IActionResult> HardDeleteAsync(SearchByIdDto id)
+        public async Task<IActionResult> HardDeleteAsync(string id)
         {
             var byId = await _filmService.GetByIdAsync(id);
             _filmService.Delete(byId.ImdbId);
@@ -89,7 +90,7 @@ namespace FilmApi.Controllers
             return Ok(id);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromQuery]SearchByIdDto id, [FromBody] UpdateDto updateDto)
+        public async Task<IActionResult> UpdateAsync([FromQuery]string id, [FromBody] UpdateDto updateDto)
         {
             var result = await _filmService.Update(id, updateDto);
             return Ok(result);

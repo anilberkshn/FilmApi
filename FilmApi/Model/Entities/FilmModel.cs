@@ -10,7 +10,8 @@ namespace FilmApi.Model.Entities
     {
         public string Title { get; set; }
         public string Year { get; set; }
-        public SearchByIdDto ImdbId { get; set; }
+        public string ImdbId { get; set; }
+        
         public string Type { get; set; }
         public string Poster { get; set; }
         public string Rated { get; set; }
