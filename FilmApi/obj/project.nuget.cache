@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "w9uwyB7p3di4it7ItcSXu4RFJu2yF8W1pGjaHShLBzWqpgd7Dlurg/8Cm8FHo3HIo5iGuTrnK1qkpkfzD2RoOw==",
+  "dgSpecHash": "ApRVbRZWTqSN3SiXvU+Loo/Gz396gyLk9UEkdP0hqE1qa2sk3wdtQHFH3oG+8WKgGE1Vn837D/En45twhuAQqA==",
   "success": true,
   "projectFilePath": "C:\\Users\\asuspc\\RiderProjects\\FilmCase\\FilmApi\\FilmApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\asuspc\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\asuspc\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",
     "C:\\Users\\asuspc\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
+    "C:\\Users\\asuspc\\.nuget\\packages\\fluentvalidation\\11.5.1\\fluentvalidation.11.5.1.nupkg.sha512",
+    "C:\\Users\\asuspc\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\asuspc\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "C:\\Users\\asuspc\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.17\\microsoft.aspnetcore.jsonpatch.5.0.17.nupkg.sha512",
     "C:\\Users\\asuspc\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.17\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.17.nupkg.sha512",
     "C:\\Users\\asuspc\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

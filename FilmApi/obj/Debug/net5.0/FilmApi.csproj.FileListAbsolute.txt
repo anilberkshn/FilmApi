@@ -50,3 +50,6 @@ C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\obj\Debug\net5.0\FilmApi.dll
 C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\obj\Debug\net5.0\ref\FilmApi.dll
 C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\obj\Debug\net5.0\FilmApi.pdb
 C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\obj\Debug\net5.0\FilmApi.genruntimeconfig.cache
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\FluentValidation.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll

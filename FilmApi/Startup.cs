@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Core.Database.Context;
 using Core.Database.Interface;
 using Core.Middleware;
 using Core.Model.Config;
+using FilmApi.Clients;
 using FilmApi.Repository;
 using FilmApi.Services;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,8 +34,19 @@ namespace FilmApi
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        [Obsolete("Obsolete")]
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddScoped<IOmdbHttpClient, OmdbHttpClient>();
+            // services.AddScoped<IOmdbHttpClient>(sp =>sp.GetRequiredService<OmdbHttpClient>());
+            services.AddHttpClient<IOmdbHttpClient>((sp, http) =>
+            {
+                http.BaseAddress = new Uri("http://www.omdbapi.com/");
+                http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            });
+        //    services.AddControllers().AddFluentValidation(fv=> fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "FilmApi", Version = "v1" }); });
             
