@@ -10,10 +10,6 @@ namespace FilmApi.Model.Entities
     {
         public string Title { get; set; }
         public string Year { get; set; }
-        public string ImdbId { get; set; }
-        
-        public string Type { get; set; }
-        public string Poster { get; set; }
         public string Rated { get; set; }
         public string Released { get; set; }//??
         public string Runtime { get; set; }
@@ -25,11 +21,13 @@ namespace FilmApi.Model.Entities
         public string Language { get; set; }
         public string Country { get; set; }
         public string Awards { get; set; }
-      
+        public string Poster { get; set; }
         public List<RaitingsModel> Ratings { get; set; }
         public string MetaScore { get; set; }//??
         public string ImdbRating { get; set; }//??
         public string ImdbVotes { get; set; }//??
+        public string ImdbId { get; set; }
+        public string Type { get; set; }
         public string Dvd { get; set; }//??
         public string BoxOffice { get; set; }//??
         public string Production { get; set; }
