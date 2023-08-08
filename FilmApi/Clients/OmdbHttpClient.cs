@@ -14,18 +14,18 @@ namespace FilmApi.Clients
     {
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _memoryCache;
-        public OmdbHttpClient(HttpClient httpClient, IMemoryCache memoryCache)
+        public OmdbHttpClient(HttpClient httpClient)//, IMemoryCache memoryCache)
         {
             _httpClient = httpClient;
-            _memoryCache = memoryCache;
+           // _memoryCache = memoryCache;
         }
 
         public async Task<FilmModel> GetCustomerByImdbId(string imdbId)
         {
-            if (_memoryCache.TryGetValue(imdbId, out FilmModel cachedFilm))
-            {
-                return cachedFilm;
-            }
+            // if (_memoryCache.TryGetValue(imdbId, out FilmModel cachedFilm))
+            // {
+            //     return cachedFilm;
+            // }
             
             var response = await _httpClient.GetAsync($"http://www.omdbapi.com/?i={imdbId}&apikey=3d7170c0");
          
@@ -33,7 +33,7 @@ namespace FilmApi.Clients
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 var film = JsonConvert.DeserializeObject<FilmModel>(jsonResponse);
-               _memoryCache.Set(imdbId, film, TimeSpan.MaxValue); 
+               // _memoryCache.Set(imdbId, film, TimeSpan.MaxValue); 
                return film;
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
