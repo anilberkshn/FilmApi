@@ -4,10 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Core.Database.Interface;
-using Core.Model;
 using Core.Model.Entities;
 using Core.Model.RequestModel;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Core.Database
@@ -26,14 +24,14 @@ namespace Core.Database
             _collection = context.DbMongoCollectionSet<T>(collectionName);
         }
 
-        public async Task<Guid> CreateAsync(T record)
+        public async Task<T> CreateAsync(T record)
         {
-            record.Id = Guid.NewGuid();
+            // record.Id = Guid.NewGuid();
             record.CreatedTime = DateTime.Now;
             record.UpdatedTime = DateTime.Now;
-
+    
             await _collection.InsertOneAsync(record);
-            return record.Id;
+            return record;
         }
 
         public async Task<IEnumerable<T>> FindAllAsync()
@@ -71,10 +69,9 @@ namespace Core.Database
             _collection.FindOneAndUpdate<T>(filter, update);
         }
 
-        public Guid Delete(Expression<Func<T, bool>> expression)
+        public void Delete(Expression<Func<T, bool>> expression)
         {
-            var record = _collection.FindOneAndDelete(expression);
-            return record.Id;
+          _collection.FindOneAndDelete(expression);
         }
 
         public void SoftDelete(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDefinition)
@@ -86,9 +83,9 @@ namespace Core.Database
             _collection.FindOneAndUpdate<T>(filter, update);
         }
         
-        public async Task<IEnumerable<T>> GetByCustomerId(Guid customerId)
+        public async Task<IEnumerable<T>> GetByTitleAsync(SearchByTitleDto searchByTitleDto) //todo: ?
         {
-            var filter = Builders<T>.Filter.Eq("CustomerId",customerId);
+            var filter = Builders<T>.Filter.Eq("Title",searchByTitleDto.Title); //??
             var result = await _collection
                 .Find(filter)
                 .ToListAsync();
