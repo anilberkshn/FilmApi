@@ -67,7 +67,7 @@ namespace FilmApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FilmApi v1"));
             }
 
-       //     app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             
             app.UseHttpsRedirection();
 
