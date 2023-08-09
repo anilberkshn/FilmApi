@@ -1797,6 +1797,7 @@
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 5.0.17",
       "Microsoft.EntityFrameworkCore >= 5.0.17",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.17",
+      "Microsoft.Extensions.Caching.Memory >= 5.0.0",
       "MongoDB.Driver >= 2.20.0",
       "Newtonsoft.Json >= 13.0.3"
     ]
@@ -1863,6 +1864,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[5.0.17, )"
+          },
+          "Microsoft.Extensions.Caching.Memory": {
+            "target": "Package",
+            "version": "[5.0.0, )"
           },
           "MongoDB.Driver": {
             "target": "Package",

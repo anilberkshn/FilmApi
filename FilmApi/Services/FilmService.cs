@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using FilmApi.Clients;
 using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
 using FilmApi.Repository;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FilmApi.Services
 {
@@ -14,16 +16,20 @@ namespace FilmApi.Services
     {
         private readonly IFilmRepository _filmRepository;
         private readonly IOmdbHttpClient _omdbHttpClient;
+        private readonly IMemoryCache _memoryCache;
 
-        public FilmService(IFilmRepository filmRepository, IOmdbHttpClient omdbHttpClient)
+        public FilmService(IFilmRepository filmRepository, IOmdbHttpClient omdbHttpClient, IMemoryCache memoryCache)
         {
             _filmRepository = filmRepository;
             _omdbHttpClient = omdbHttpClient;
+            _memoryCache = memoryCache;
         }
 
         public async Task<FilmModel> InsertAsync(FilmModel filmModel)
         {
-            //todo : http client ile önce bu imdb id de varmı kontrol edilip yoksa eklemeyi kafamıza göre yapamamamız lazım gibi.Var olursa o imdbId li veriler dönmek lazım. 
+            
+            //todo : http client ile önce bu imdb id de varmı kontrol edilip yoksa eklemeyi kafamıza göre yapamamamız lazım gibi.
+            //TODO: Var olursa o imdbId li veriler dönmek lazım. 
 
             return await _filmRepository.InsertAsync(filmModel);
         }
@@ -35,8 +41,13 @@ namespace FilmApi.Services
 
         public async Task<FilmModel> GetByIdAsync(string id)
         {
+            if (_memoryCache.TryGetValue(id, out FilmModel cachedFilm))
+            {
+                return cachedFilm;
+            }
+            
             var film = await _filmRepository.GetByIdAsync(id);
-
+            _memoryCache.Set(id, film, TimeSpan.FromDays(30));
             if (film == null)
             {
                 var httpResponse = await _omdbHttpClient.GetCustomerByImdbId(id);
@@ -46,6 +57,7 @@ namespace FilmApi.Services
                 }
                 else
                 {
+                    _memoryCache.Set(id, httpResponse, TimeSpan.FromDays(30));
                     await _filmRepository.InsertAsync(httpResponse);
                     return httpResponse;
                 }
@@ -66,6 +78,7 @@ namespace FilmApi.Services
 
         public async Task<FilmModel> Update(string id, UpdateDto updateDto)
         {
+            // önce film bilgileri çekilip oradaki film bilgileri kısmını body kısmında gösterilebilir mi? 
             var result = await _filmRepository.Update(id, updateDto);
             // Kendi veritabanımızda film bilgisini güncelleyebilmek için 
             return result;

@@ -13,7 +13,7 @@ namespace FilmApi.Clients
     public class OmdbHttpClient : IOmdbHttpClient
     {
         private readonly HttpClient _httpClient;
-        private readonly IMemoryCache _memoryCache;
+        // private readonly IMemoryCache _memoryCache;
         public OmdbHttpClient(HttpClient httpClient)//, IMemoryCache memoryCache)
         {
             _httpClient = httpClient;

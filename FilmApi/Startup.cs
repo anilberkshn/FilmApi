@@ -40,6 +40,7 @@ namespace FilmApi
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "FilmApi", Version = "v1" }); });
             
+            services.AddMemoryCache();
             
             var dbSettings = Configuration.GetSection("DatabaseSettings").Get<GenericDatabaseSettings>();
             var client = new MongoClient(dbSettings.ConnectionString);

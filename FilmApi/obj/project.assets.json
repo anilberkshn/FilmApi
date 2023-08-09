@@ -704,6 +704,7 @@
           "FluentValidation.AspNetCore": "11.3.0",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "5.0.17",
           "Microsoft.EntityFrameworkCore": "5.0.17",
+          "Microsoft.Extensions.Caching.Memory": "5.0.0",
           "MongoDB.Driver": "2.20.0",
           "Newtonsoft.Json": "13.0.3"
         },
@@ -1846,6 +1847,7 @@
     "net5.0": [
       "Core >= 1.0.0",
       "FluentValidation.AspNetCore >= 11.3.0",
+      "Microsoft.Extensions.Caching.Memory >= 5.0.0",
       "MongoDB.Driver >= 2.20.0",
       "Newtonsoft.Json >= 13.0.3",
       "Swashbuckle.AspNetCore >= 5.6.3"
@@ -1903,6 +1905,10 @@
           "FluentValidation.AspNetCore": {
             "target": "Package",
             "version": "[11.3.0, )"
+          },
+          "Microsoft.Extensions.Caching.Memory": {
+            "target": "Package",
+            "version": "[5.0.0, )"
           },
           "MongoDB.Driver": {
             "target": "Package",
