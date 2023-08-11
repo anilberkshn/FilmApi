@@ -24,7 +24,7 @@ namespace FilmApi.Services
             _omdbHttpClient = omdbHttpClient;
             _memoryCache = memoryCache;
         }
-
+  
         public async Task<FilmModel> InsertAsync(FilmModel filmModel)
         {
             
@@ -53,7 +53,7 @@ namespace FilmApi.Services
                 var httpResponse = await _omdbHttpClient.GetCustomerByImdbId(id);
                 if (httpResponse == null)
                 {
-                    throw new CustomException(HttpStatusCode.NotFound, "Bu id de film bulunamadı.");
+                    throw new CustomException(HttpStatusCode.NotFound, "This id also could not find the movie.");
                 }
                 else
                 {
@@ -65,7 +65,7 @@ namespace FilmApi.Services
 
             if (film.IsDeleted)
             {
-                throw new CustomException(HttpStatusCode.NotFound, "Film  veri tabanımızda bulunamadı.");
+                throw new CustomException(HttpStatusCode.NotFound, "This id was also not found in the movie database.");
             }
 
             return film;

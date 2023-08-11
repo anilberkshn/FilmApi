@@ -53,3 +53,10 @@ C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\obj\Debug\net5.0\FilmApi.genrunti
 C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\FluentValidation.dll
 C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
 C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\asuspc\RiderProjects\FilmCase\FilmApi\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll

@@ -4,10 +4,12 @@ using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
 using FilmApi.Model.ResponseModels;
 using FilmApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilmApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/films")]
     
