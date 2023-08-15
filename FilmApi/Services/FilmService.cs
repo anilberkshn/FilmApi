@@ -27,10 +27,6 @@ namespace FilmApi.Services
   
         public async Task<FilmModel> InsertAsync(FilmModel filmModel)
         {
-            
-            //todo : http client ile önce bu imdb id de varmı kontrol edilip yoksa eklemeyi kafamıza göre yapamamamız lazım gibi.
-            //TODO: Var olursa o imdbId li veriler dönmek lazım. 
-
             return await _filmRepository.InsertAsync(filmModel);
         }
 

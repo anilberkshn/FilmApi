@@ -91,6 +91,8 @@ namespace FilmApi.Controllers
             
             return Ok(id);
         }
+        
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateAsync([FromQuery]string id, [FromBody] UpdateDto updateDto)
         {
