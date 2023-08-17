@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FilmApi.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("api/films")]
     
@@ -92,7 +92,7 @@ namespace FilmApi.Controllers
             return Ok(id);
         }
         
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateAsync([FromQuery]string id, [FromBody] UpdateDto updateDto)
         {
