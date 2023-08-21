@@ -68,7 +68,15 @@ namespace FilmApi.Controllers
         {
             var findOne = await _filmService.GetByIdAsync(id);
             return Ok(findOne);
+        } 
+        [HttpGet("title")]
+        public async Task<IActionResult> GetByTitleAsync([FromQuery] SearchByTitleDto title)
+        {
+            var findOne = await _filmService.GetByTitleAsync(title);
+            return Ok(findOne);
         }
+        
+        
         
         [HttpGet("All")]
         public async Task<IActionResult> GetAllAsync()
@@ -92,7 +100,7 @@ namespace FilmApi.Controllers
             return Ok(id);
         }
         
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles="admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateAsync([FromQuery]string id, [FromBody] UpdateDto updateDto)
         {

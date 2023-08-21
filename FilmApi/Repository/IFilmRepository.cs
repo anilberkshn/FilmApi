@@ -18,6 +18,6 @@ namespace FilmApi.Repository
         // public void SoftDelete(Guid id, SoftDeleteDto softDeleteDto);
         // public StatusDto ChangeStatus(Guid id, StatusDto statusDto);
         
-        public Task<IEnumerable<FilmModel>> GetByTitleRepoAsync(SearchByTitleDto byTitleDto);
+        public Task<IEnumerable<FilmModel>> GetByTitleAsync(SearchByTitleDto byTitleDto);
     }
 }

@@ -61,6 +61,15 @@ namespace Core.Database
             var record = await _collection.Find(expression).FirstOrDefaultAsync();
             return record;
         }
+        
+        public async Task<IEnumerable<T>> FindByTitleAsync(SearchByTitleDto searchByTitleDto)
+        {
+            var filter = Builders<T>.Filter.Regex("Title",searchByTitleDto.Title);//.regex
+            var result = await _collection
+                .Find(filter)
+                .ToListAsync();
+            return result;
+        }
 
         public void Update(Expression<Func<T, bool>> expression, UpdateDefinition<T> updateDefinition)
         {
@@ -83,13 +92,6 @@ namespace Core.Database
             _collection.FindOneAndUpdate<T>(filter, update);
         }
         
-        public async Task<IEnumerable<T>> GetByTitleAsync(SearchByTitleDto searchByTitleDto) //todo: ?
-        {
-            var filter = Builders<T>.Filter.Eq("Title",searchByTitleDto.Title); //??
-            var result = await _collection
-                .Find(filter)
-                .ToListAsync();
-            return result;
-        }
+       
     }
 }

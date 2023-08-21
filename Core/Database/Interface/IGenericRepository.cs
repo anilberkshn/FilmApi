@@ -18,6 +18,6 @@ namespace Core.Database.Interface
         public void Delete(Expression<Func<T, bool>> expression);
         public void SoftDelete(Expression<Func<T, bool>> expression,UpdateDefinition<T> updateDefinition);
 
-        public Task<IEnumerable<T>> GetByTitleAsync(SearchByTitleDto searchByTitleDto);
+        public Task<IEnumerable<T>> FindByTitleAsync(SearchByTitleDto searchByTitleDto);
     }
 }

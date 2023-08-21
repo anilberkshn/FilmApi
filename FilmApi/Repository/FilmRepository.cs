@@ -20,7 +20,10 @@ namespace FilmApi.Repository
             var film = await FindOneAsync(x => x.ImdbId == id);
             return film;
         }
-
+        public async Task<IEnumerable<FilmModel>> GetByTitleAsync(SearchByTitleDto byTitleDto)
+        {
+            return  await FindByTitleAsync(byTitleDto);  
+        }
         public async Task<IEnumerable<FilmModel>> GetAllAsync()
         {
             return await FindAllAsync();
@@ -35,7 +38,6 @@ namespace FilmApi.Repository
         {
             return await CreateAsync(filmModel);
         }
-
         public async Task<FilmModel> Update(string id, UpdateDto updateDto)
         {
             var update = Builders<FilmModel>.Update
@@ -63,15 +65,10 @@ namespace FilmApi.Repository
             Update(x => x.ImdbId == id, update);
             return await GetByIdAsync(id);
         }
-
         public void DeleteRepo(string id)
         {
           Delete(x => x.ImdbId == id);
         }
-
-        public async Task<IEnumerable<FilmModel>> GetByTitleRepoAsync(SearchByTitleDto byTitleDto)
-        {
-            return  await GetByTitleAsync(byTitleDto);  
-        }
+        
     }
 }

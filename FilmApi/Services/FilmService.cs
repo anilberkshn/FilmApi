@@ -66,13 +66,20 @@ namespace FilmApi.Services
 
             return film;
         }
+        
+        public async Task<IEnumerable<FilmModel>> GetByTitleAsync(SearchByTitleDto byTitleDto)
+        {
+            var films = await _filmRepository.GetByTitleAsync(byTitleDto);  
+            // todo : Filmler veri tabanımızda yoksa Http client ile isteyip veri tabanımıza kaydetmeli. httpclientda da yoksa film bulunamadı. 
+            return films;
+        }
 
         public async Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto)
         {
             return await _filmRepository.GetAllSkipTakeAsync(getAllDto);
         }
 
-        public async Task<FilmModel> Update(string id, UpdateDto updateDto)
+        public async Task<FilmModel>  Update(string id, UpdateDto updateDto)
         {
             // önce film bilgileri çekilip oradaki film bilgileri kısmını body kısmında gösterilebilir mi? 
             var result = await _filmRepository.Update(id, updateDto);
@@ -83,13 +90,6 @@ namespace FilmApi.Services
         public void Delete(string id)
         {
             _filmRepository.DeleteRepo(id);
-        }
-
-        public async Task<IEnumerable<FilmModel>> GetByTitleRepoAsync(SearchByTitleDto byTitleDto)
-        {
-            var films = await _filmRepository.GetByTitleRepoAsync(byTitleDto);
-            // todo : Filmler veri tabanımızda yoksa Http client ile isteyip veri tabanımıza kaydetmeli. httpclientda da yoksa film bulunamadı. 
-            return films;
         }
     }
 }
