@@ -62,9 +62,9 @@ namespace Core.Database
             return record;
         }
         
-        public async Task<IEnumerable<T>> FindByTitleAsync(SearchByTitleDto searchByTitleDto)
+        public async Task<IEnumerable<T>> FindByTitleAsync(string searchByTitleDto)
         {
-            var filter = Builders<T>.Filter.Regex("Title",searchByTitleDto.Title);//.regex
+            var filter = Builders<T>.Filter.Regex("Title",searchByTitleDto);//.regex
             var result = await _collection
                 .Find(filter)
                 .ToListAsync();

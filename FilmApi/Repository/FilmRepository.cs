@@ -20,7 +20,7 @@ namespace FilmApi.Repository
             var film = await FindOneAsync(x => x.ImdbId == id);
             return film;
         }
-        public async Task<IEnumerable<FilmModel>> GetByTitleAsync(SearchByTitleDto byTitleDto)
+        public async Task<IEnumerable<FilmModel>> GetByTitleAsync(string byTitleDto)
         {
             return  await FindByTitleAsync(byTitleDto);  
         }

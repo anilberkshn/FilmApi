@@ -69,14 +69,13 @@ namespace FilmApi.Controllers
             var findOne = await _filmService.GetByIdAsync(id);
             return Ok(findOne);
         } 
-        [HttpGet("title")]
-        public async Task<IActionResult> GetByTitleAsync([FromQuery] SearchByTitleDto title)
+        
+        [HttpGet("Title:{title}")]
+        public async Task<IActionResult> GetByTitleAsync(string title)
         {
-            var findOne = await _filmService.GetByTitleAsync(title);
-            return Ok(findOne);
+            var titleList = await _filmService.GetByTitleAsync(title);
+            return Ok(titleList);
         }
-        
-        
         
         [HttpGet("All")]
         public async Task<IActionResult> GetAllAsync()

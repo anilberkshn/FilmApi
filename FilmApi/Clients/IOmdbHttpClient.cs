@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
 using FilmApi.Model.Entities;
+using FilmApi.Model.RequestModels;
 
 namespace FilmApi.Clients
 {
     public interface IOmdbHttpClient
     {
-        public Task<FilmModel> GetCustomerByImdbId(string imdbId);
+        public Task<FilmModel> GetByImdbId(string imdbId);
+        public Task<SearchByTitleDto> GetByTitle(string imdbId);
     }
 }
