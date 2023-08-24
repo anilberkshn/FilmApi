@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
 
-namespace FilmApi.Helper.Mapper
+namespace FilmApi.Mapper
 {
     public static class FilmToSearchTitleDto
     {

@@ -14,7 +14,7 @@ namespace FilmApi.Services
         public Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto);
         public Task<FilmModel> Update(string imdbId, UpdateDto updateDto);
         public void Delete(string id);
-        public Task<IEnumerable<SearchByTitleDto>> GetByTitleAsync(string byTitleDto);
+        public Task<IEnumerable<FilmModel>> GetByTitleAsync(string byTitleDto);
 
     }
 }

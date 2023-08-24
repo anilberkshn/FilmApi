@@ -63,7 +63,7 @@ namespace FilmApi.Controllers
             return Ok(response);
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]  // 2 id alımı silinip denenecek
         public async Task<IActionResult> GetByIdAsync(string id)
         {
             var findOne = await _filmService.GetByIdAsync(id);
@@ -90,7 +90,7 @@ namespace FilmApi.Controllers
             return Ok(getAll);
         }
         
-        [HttpDelete("HardDelete")]
+        [HttpDelete()]
         public async Task<IActionResult> HardDeleteAsync(string id)
         {
             var byId = await _filmService.GetByIdAsync(id);

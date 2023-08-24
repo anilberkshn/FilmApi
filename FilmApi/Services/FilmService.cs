@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Core.Model.ErrorModels;
 using Core.Model.RequestModel;
 using FilmApi.Clients;
-using FilmApi.Helper.Mapper;
 using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
 using FilmApi.Repository;
@@ -25,7 +24,7 @@ namespace FilmApi.Services
             _omdbHttpClient = omdbHttpClient;
             _memoryCache = memoryCache;
         }
-  
+
         public async Task<FilmModel> InsertAsync(FilmModel filmModel)
         {
             return await _filmRepository.InsertAsync(filmModel);
@@ -42,7 +41,7 @@ namespace FilmApi.Services
             {
                 return cachedFilm;
             }
-            
+
             var film = await _filmRepository.GetByIdAsync(id);
             _memoryCache.Set(id, film, TimeSpan.FromDays(30));
             if (film == null)
@@ -67,23 +66,33 @@ namespace FilmApi.Services
 
             return film;
         }
-        
-        public async Task<IEnumerable<SearchByTitleDto>> GetByTitleAsync(string byTitleDto)
-        {
-            var films = await _filmRepository.GetByTitleAsync(byTitleDto);
 
-            List<SearchByTitleDto> listToSearchDto = null;
-            
-            foreach (var film in films)
+        public async Task<IEnumerable<FilmModel>> GetByTitleAsync(string byTitleDto)
+        {
+            IEnumerable<FilmModel> films = null;
+            IEnumerable<FilmModel> httpResponse = await _omdbHttpClient.GetByTitle(byTitleDto);
+            if (httpResponse == null)
             {
-                SearchByTitleDto toSearchDto = await FilmToSearchTitleDto.MapToSearchByTitleDto(film);
-                listToSearchDto.Add(toSearchDto);
+                films = await _filmRepository.GetByTitleAsync(byTitleDto);
+                if (films == null)
+                {
+                    throw new CustomException(HttpStatusCode.NotFound, "This title also could not find the movie.");
+                }
+                return films;
             }
-            
-            
-            
-            // todo : Filmler veri tabanımızda yoksa Http client ile isteyip veri tabanımıza kaydetmeli. httpclientda da yoksa film bulunamadı. 
-            return listToSearchDto;
+
+            _memoryCache.Set(byTitleDto, httpResponse, TimeSpan.FromDays(30));
+            await _filmRepository.InsertAsync(httpResponse);
+            return httpResponse;
+
+
+            // List<SearchByTitleDto> listToSearchDto;
+            //
+            // foreach (var film in films)
+            // {
+            //     SearchByTitleDto toSearchDto = await FilmToSearchTitleDto.MapToSearchByTitleDto(film);
+            //     listToSearchDto.Add(toSearchDto);
+            // }
         }
 
         public async Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto)
@@ -91,7 +100,7 @@ namespace FilmApi.Services
             return await _filmRepository.GetAllSkipTakeAsync(getAllDto);
         }
 
-        public async Task<FilmModel>  Update(string id, UpdateDto updateDto)
+        public async Task<FilmModel> Update(string id, UpdateDto updateDto)
         {
             // önce film bilgileri çekilip oradaki film bilgileri kısmını body kısmında gösterilebilir mi? 
             var result = await _filmRepository.Update(id, updateDto);

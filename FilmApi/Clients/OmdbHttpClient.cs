@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Core.Model.ErrorModels;
 using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
+using FilmApi.Model.ResponseModels;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 
@@ -30,37 +32,37 @@ namespace FilmApi.Clients
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 var film = JsonConvert.DeserializeObject<FilmModel>(jsonResponse);
-               // _memoryCache.Set(imdbId, film, TimeSpan.MaxValue); 
+              
                return film;
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new CustomException(HttpStatusCode.NotFound, "Film bulunamadı");
+                throw new CustomException(HttpStatusCode.NotFound, "The movie was not found");
             }
             else
             {
-                throw new CustomException(response.StatusCode, "Api istek hatası");
+                throw new CustomException(response.StatusCode, "Api request error");
             }
         }
         
-        public async Task<SearchByTitleDto> GetByTitle(string title)
+        public async Task<IEnumerable<SearchByTitle>> GetByTitle(string title)
         {
            var response = await _httpClient.GetAsync($"http://www.omdbapi.com/?s={title}&apikey=3d7170c0");
          
             if (response.IsSuccessStatusCode)
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
-                var filmTitle = JsonConvert.DeserializeObject<SearchByTitleDto>(jsonResponse);
+                var filmTitle = JsonConvert.DeserializeObject<TitleHttpClientResponse>(jsonResponse);
                  
-                return filmTitle;
+                return filmTitle;// list dönecek atmış olduğumuz title sorgusu
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new CustomException(HttpStatusCode.NotFound, "Film bulunamadı");
+                throw new CustomException(HttpStatusCode.NotFound, "The movie was not found");
             }
             else
             {
-                throw new CustomException(response.StatusCode, "Api istek hatası");
+                throw new CustomException(response.StatusCode, "Api request error");
             }
         }
     }
