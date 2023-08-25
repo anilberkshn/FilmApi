@@ -4,7 +4,7 @@ using FilmApi.Model.RequestModels;
 
 namespace FilmApi.Mapper
 {
-    public static class FilmToSearchTitleDto
+    public static class FilmToSearchTitle
     {
         public static async Task<SearchByTitleDto>  MapToSearchByTitleDto(FilmModel film)
         {

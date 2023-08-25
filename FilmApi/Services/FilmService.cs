@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Core.Model.ErrorModels;
 using Core.Model.RequestModel;
 using FilmApi.Clients;
+using FilmApi.Mapper;
 using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
 using FilmApi.Repository;
@@ -69,30 +71,47 @@ namespace FilmApi.Services
 
         public async Task<IEnumerable<FilmModel>> GetByTitleAsync(string byTitleDto)
         {
-            IEnumerable<FilmModel> films = null;
-            IEnumerable<FilmModel> httpResponse = await _omdbHttpClient.GetByTitle(byTitleDto);
+            var cachedFilms = _memoryCache.Get<IEnumerable<FilmModel>>(byTitleDto);
+            if (cachedFilms != null)
+            {
+                return cachedFilms;
+            }
+
+            var dbFilms = await _filmRepository.GetByTitleAsync(byTitleDto);
+            if (dbFilms != null)
+            {
+                var byTitleAsync = dbFilms.ToList();
+                _memoryCache.Set(byTitleDto, byTitleAsync, TimeSpan.FromDays(30));
+                return byTitleAsync;
+            }
+
+
+            IEnumerable<SearchByTitle> httpResponse = await _omdbHttpClient.GetByTitle(byTitleDto);
+
             if (httpResponse == null)
             {
-                films = await _filmRepository.GetByTitleAsync(byTitleDto);
-                if (films == null)
+                var dbfilms = await _filmRepository.GetByTitleAsync(byTitleDto);
+                if (dbfilms == null)
                 {
                     throw new CustomException(HttpStatusCode.NotFound, "This title also could not find the movie.");
                 }
-                return films;
+
+                return dbfilms;
             }
+            /*-----------------------------------------*/
 
-            _memoryCache.Set(byTitleDto, httpResponse, TimeSpan.FromDays(30));
-            await _filmRepository.InsertAsync(httpResponse);
-            return httpResponse;
+            var searchByTitles = httpResponse.ToList();
+            List<FilmModel> films = new List<FilmModel>();
+            foreach (var searchByTitle in searchByTitles)
+            {
+                var httpResponseToFilmModel = await SearchTitleToFilmModel.MapToSearchTitleToFilmModel(searchByTitle);
+                await _filmRepository.InsertAsync(httpResponseToFilmModel);
+                _memoryCache.Set(byTitleDto, searchByTitles, TimeSpan.FromDays(30));
+                films.Add(httpResponseToFilmModel);
+            }
+            /*-----------------------------------------*/
 
-
-            // List<SearchByTitleDto> listToSearchDto;
-            //
-            // foreach (var film in films)
-            // {
-            //     SearchByTitleDto toSearchDto = await FilmToSearchTitleDto.MapToSearchByTitleDto(film);
-            //     listToSearchDto.Add(toSearchDto);
-            // }
+            return films;
         }
 
         public async Task<IEnumerable<FilmModel>> GetAllSkipTakeAsync(GetAllDto getAllDto)

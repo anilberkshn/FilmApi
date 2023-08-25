@@ -8,6 +8,6 @@ namespace FilmApi.Clients
     public interface IOmdbHttpClient
     {
         public Task<FilmModel> GetByImdbId(string imdbId);
-        public Task<IEnumerable<FilmModel>> GetByTitle(string imdbId);
+        public Task<IEnumerable<SearchByTitle>> GetByTitle(string imdbId);
     }
 }
