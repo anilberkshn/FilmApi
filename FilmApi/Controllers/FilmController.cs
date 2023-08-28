@@ -6,6 +6,7 @@ using FilmApi.Model.ResponseModels;
 using FilmApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FilmApi.Controllers
 {
@@ -16,10 +17,12 @@ namespace FilmApi.Controllers
     public class FilmController : ControllerBase
     {
         private readonly IFilmService _filmService;
+        private readonly ILogger<FilmController> _logger;
 
-        public FilmController(IFilmService filmService)
+        public FilmController(IFilmService filmService, ILogger<FilmController> logger)
         {
             _filmService = filmService;
+            _logger = logger;
         }
         
         [HttpPost]

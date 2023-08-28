@@ -11,20 +11,23 @@ using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
 using FilmApi.Repository;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
-namespace FilmApi.Services
+namespace FilmApi.Services  
 {
     public class FilmService : IFilmService
     {
         private readonly IFilmRepository _filmRepository;
         private readonly IOmdbHttpClient _omdbHttpClient;
         private readonly IMemoryCache _memoryCache;
+        private readonly ILogger<FilmService> _logger;
 
-        public FilmService(IFilmRepository filmRepository, IOmdbHttpClient omdbHttpClient, IMemoryCache memoryCache)
+        public FilmService(IFilmRepository filmRepository, IOmdbHttpClient omdbHttpClient, IMemoryCache memoryCache, ILogger<FilmService> logger)
         {
             _filmRepository = filmRepository;
             _omdbHttpClient = omdbHttpClient;
             _memoryCache = memoryCache;
+            _logger = logger;
         }
 
         public async Task<FilmModel> InsertAsync(FilmModel filmModel)
@@ -41,6 +44,7 @@ namespace FilmApi.Services
         {
             if (_memoryCache.TryGetValue(id, out FilmModel cachedFilm))
             {
+                _logger.LogInformation("The film was brought from the cache");
                 return cachedFilm;
             }
 
@@ -85,7 +89,6 @@ namespace FilmApi.Services
                 return byTitleAsync;
             }
 
-
             IEnumerable<SearchByTitle> httpResponse = await _omdbHttpClient.GetByTitle(byTitleDto);
 
             if (httpResponse == null)
@@ -95,7 +98,6 @@ namespace FilmApi.Services
                 {
                     throw new CustomException(HttpStatusCode.NotFound, "This title also could not find the movie.");
                 }
-
                 return dbfilms;
             }
             /*-----------------------------------------*/
@@ -110,7 +112,6 @@ namespace FilmApi.Services
                 films.Add(httpResponseToFilmModel);
             }
             /*-----------------------------------------*/
-
             return films;
         }
 

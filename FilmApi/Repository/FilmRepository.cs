@@ -5,14 +5,17 @@ using Core.Database.Interface;
 using Core.Model.RequestModel;
 using FilmApi.Model.Entities;
 using FilmApi.Model.RequestModels;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace FilmApi.Repository
 {
     public class FilmRepository: GenericRepository<FilmModel>,IFilmRepository
     {
-        public FilmRepository(IContext context, string collectionName = "Film") : base(context, collectionName)
+        private readonly ILogger<FilmRepository> _logger;
+        public FilmRepository(IContext context, ILogger<FilmRepository> logger, string collectionName = "Film") : base(context, collectionName)
         {
+            _logger = logger;
         }
 
         public async Task<FilmModel> GetByIdAsync(string id)
