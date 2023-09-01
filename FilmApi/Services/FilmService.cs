@@ -21,7 +21,7 @@ namespace FilmApi.Services
         private readonly IOmdbHttpClient _omdbHttpClient;
         private readonly IMemoryCache _memoryCache;
         private readonly ILogger<FilmService> _logger;
-
+        
         public FilmService(IFilmRepository filmRepository, IOmdbHttpClient omdbHttpClient, IMemoryCache memoryCache, ILogger<FilmService> logger)
         {
             _filmRepository = filmRepository;
@@ -30,17 +30,7 @@ namespace FilmApi.Services
             _logger = logger;
         }
 
-        public async Task<FilmModel> InsertAsync(FilmModel filmModel)
-        {
-            return await _filmRepository.InsertAsync(filmModel);
-        }
-
-        public async Task<IEnumerable<FilmModel>> GetAllAsync()
-        {
-            return await _filmRepository.GetAllAsync();
-        }
-
-        public async Task<FilmModel> GetByIdAsync(string id)
+         public async Task<FilmModel> GetByIdAsync(string id)
         {
             if (_memoryCache.TryGetValue(id, out FilmModel cachedFilm))
             {
@@ -76,15 +66,17 @@ namespace FilmApi.Services
         public async Task<IEnumerable<FilmModel>> GetByTitleAsync(string byTitleDto)
         {
             var cachedFilms = _memoryCache.Get<IEnumerable<FilmModel>>(byTitleDto);
-            if (cachedFilms != null)
+            if (cachedFilms != null )
             {
                 return cachedFilms;
             }
 
             var dbFilms = await _filmRepository.GetByTitleAsync(byTitleDto);
-            if (dbFilms != null)
+            var filmModels = dbFilms.ToList();
+           
+            if (dbFilms != null && filmModels.Count() != 0) // Todo: sarı kısmı kaldırınca hata alıyor. 
             {
-                var byTitleAsync = dbFilms.ToList();
+                var byTitleAsync = filmModels.ToList();
                 _memoryCache.Set(byTitleDto, byTitleAsync, TimeSpan.FromDays(30));
                 return byTitleAsync;
             }
@@ -100,18 +92,17 @@ namespace FilmApi.Services
                 }
                 return dbfilms;
             }
-            /*-----------------------------------------*/
-
-            var searchByTitles = httpResponse.ToList();
+          
+            var searchByTitlesList = httpResponse.ToList();
             List<FilmModel> films = new List<FilmModel>();
-            foreach (var searchByTitle in searchByTitles)
+            foreach (var searchByTitle in searchByTitlesList)
             {
                 var httpResponseToFilmModel = await SearchTitleToFilmModel.MapToSearchTitleToFilmModel(searchByTitle);
                 await _filmRepository.InsertAsync(httpResponseToFilmModel);
-                _memoryCache.Set(byTitleDto, searchByTitles, TimeSpan.FromDays(30));
+                _memoryCache.Set(byTitleDto, searchByTitlesList, TimeSpan.FromDays(30));
                 films.Add(httpResponseToFilmModel);
             }
-            /*-----------------------------------------*/
+            
             return films;
         }
 
@@ -120,6 +111,17 @@ namespace FilmApi.Services
             return await _filmRepository.GetAllSkipTakeAsync(getAllDto);
         }
 
+        public async Task<FilmModel> InsertAsync(FilmModel filmModel)
+        {
+            return await _filmRepository.InsertAsync(filmModel);
+        }
+
+        public async Task<IEnumerable<FilmModel>> GetAllAsync()
+        {
+            return await _filmRepository.GetAllAsync();
+        }
+
+       
         public async Task<FilmModel> Update(string id, UpdateDto updateDto)
         {
             // önce film bilgileri çekilip oradaki film bilgileri kısmını body kısmında gösterilebilir mi? 

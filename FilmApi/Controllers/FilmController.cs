@@ -25,6 +25,33 @@ namespace FilmApi.Controllers
             _logger = logger;
         }
         
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(string id)
+        {
+            var findOne = await _filmService.GetByIdAsync(id);
+            return Ok(findOne);
+        } 
+        
+        [HttpGet("Title")]
+        public async Task<IActionResult> GetByTitleAsync(string title)
+        {
+            var titleList = await _filmService.GetByTitleAsync(title);
+            return Ok(titleList);
+        }
+        
+        [HttpGet("All")]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var getAll = await _filmService.GetAllAsync();
+            return Ok(getAll);
+        }
+        [HttpGet("AllWithSkipTake")]
+        public async Task<IActionResult> GetAllSkipTakeAsync([FromQuery] GetAllDto getAllDto)
+        {
+            var getAll = await _filmService.GetAllSkipTakeAsync(getAllDto);
+            return Ok(getAll);
+        }
+        
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateDto createDto)
         {
@@ -64,33 +91,6 @@ namespace FilmApi.Controllers
                 ImdbId= film.ImdbId
             };
             return Ok(response);
-        }
-        
-        [HttpGet("{id}")]  // 2 id alımı silinip denenecek
-        public async Task<IActionResult> GetByIdAsync(string id)
-        {
-            var findOne = await _filmService.GetByIdAsync(id);
-            return Ok(findOne);
-        } 
-        
-        [HttpGet("Title:{title}")]
-        public async Task<IActionResult> GetByTitleAsync(string title)
-        {
-            var titleList = await _filmService.GetByTitleAsync(title);
-            return Ok(titleList);
-        }
-        
-        [HttpGet("All")]
-        public async Task<IActionResult> GetAllAsync()
-        {
-            var getAll = await _filmService.GetAllAsync();
-            return Ok(getAll);
-        }
-        [HttpGet("AllWithSkipTake")]
-        public async Task<IActionResult> GetAllSkipTakeAsync([FromQuery] GetAllDto getAllDto)
-        {
-            var getAll = await _filmService.GetAllSkipTakeAsync(getAllDto);
-            return Ok(getAll);
         }
         
         [HttpDelete()]

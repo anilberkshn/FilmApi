@@ -74,11 +74,6 @@ namespace FilmApi
            
             services.AddScoped<IOmdbHttpClient>(sp =>sp.GetRequiredService<OmdbHttpClient>());
             services.AddHttpClient<IOmdbHttpClient, OmdbHttpClient>();
-            // services.AddHttpClient<IOmdbHttpClient>((sp, http) =>
-            // {
-            //     http.BaseAddress = new Uri("http://www.omdbapi.com/");
-            //     http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            // });
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
