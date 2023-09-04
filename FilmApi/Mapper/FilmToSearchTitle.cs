@@ -6,9 +6,9 @@ namespace FilmApi.Mapper
 {
     public static class FilmToSearchTitle
     {
-        public static async Task<SearchByTitleDto>  MapToSearchByTitleDto(FilmModel film)
+        public static async Task<SearchByTitle>  MapToSearchByTitleDto(FilmModel film)
         {
-            return await Task.Run(() => new SearchByTitleDto
+            return await Task.Run(() => new SearchByTitle
             {
                 Title = film.Title,
                 Year = film.Year,

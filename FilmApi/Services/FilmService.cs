@@ -63,29 +63,29 @@ namespace FilmApi.Services
             return film;
         }
 
-        public async Task<IEnumerable<FilmModel>> GetByTitleAsync(string byTitleDto)
+        public async Task<IEnumerable<FilmModel>> GetByTitleAsync(string title)
         {
-            var cachedFilms = _memoryCache.Get<IEnumerable<FilmModel>>(byTitleDto);
-            if (cachedFilms != null )
+            var cachedFilms = _memoryCache.Get<IEnumerable<FilmModel>>(title);
+            if (cachedFilms != null  )
             {
                 return cachedFilms;
             }
 
-            var dbFilms = await _filmRepository.GetByTitleAsync(byTitleDto);
+            var dbFilms = await _filmRepository.GetByTitleAsync(title);
             var filmModels = dbFilms.ToList();
            
             if (dbFilms != null && filmModels.Count() != 0) // Todo: sarı kısmı kaldırınca hata alıyor. 
             {
                 var byTitleAsync = filmModels.ToList();
-                _memoryCache.Set(byTitleDto, byTitleAsync, TimeSpan.FromDays(30));
+                _memoryCache.Set(title, byTitleAsync, TimeSpan.FromDays(30));
                 return byTitleAsync;
             }
 
-            IEnumerable<SearchByTitle> httpResponse = await _omdbHttpClient.GetByTitle(byTitleDto);
+            IEnumerable<SearchByTitle> httpResponse = await _omdbHttpClient.GetByTitle(title);
 
             if (httpResponse == null)
             {
-                var dbfilms = await _filmRepository.GetByTitleAsync(byTitleDto);
+                var dbfilms = await _filmRepository.GetByTitleAsync(title);
                 if (dbfilms == null)
                 {
                     throw new CustomException(HttpStatusCode.NotFound, "This title also could not find the movie.");
@@ -99,9 +99,9 @@ namespace FilmApi.Services
             {
                 var httpResponseToFilmModel = await SearchTitleToFilmModel.MapToSearchTitleToFilmModel(searchByTitle);
                 await _filmRepository.InsertAsync(httpResponseToFilmModel);
-                _memoryCache.Set(byTitleDto, searchByTitlesList, TimeSpan.FromDays(30));
                 films.Add(httpResponseToFilmModel);
             }
+            _memoryCache.Set(title, films, TimeSpan.FromDays(30));
             
             return films;
         }
