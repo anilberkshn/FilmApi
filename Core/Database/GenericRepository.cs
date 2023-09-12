@@ -63,13 +63,13 @@ namespace Core.Database
             return record;
         }
         
-        public async Task<IEnumerable<T>> FindByTitleAsync(string searchByTitleDto)
+        public async Task<IEnumerable<T>> FindByTitleAsync(string searchByTitle)
         {
             var keys = Builders<T>.IndexKeys.Text("Title");
             var indexModel = new CreateIndexModel<T>(keys);
             await _collection.Indexes.CreateOneAsync(indexModel);
 
-            var filter = Builders<T>.Filter.Text(searchByTitleDto);
+            var filter = Builders<T>.Filter.Text(searchByTitle);
             var result = await _collection
                 .Find(filter)
                 .ToListAsync();

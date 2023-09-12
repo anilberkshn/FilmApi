@@ -57,7 +57,7 @@ namespace FilmApi
                         ValidAudience =  Configuration["Token:Audience"], 
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"])), // token kodu "JwtKeyTokenKodu"
                         ClockSkew = TimeSpan.Zero,
-                        RoleClaimType = "roles"// ilk kullanım
+                        RoleClaimType = "Roles"// ilk kullanım
                     };
                     services.AddControllers();
                 });

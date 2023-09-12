@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FilmApi.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class JwtTestController : Controller
